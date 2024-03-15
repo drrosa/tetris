@@ -25,6 +25,19 @@ class TetrisGame {
         this.boardDisplay = canvasEl.getContext("2d");
         this.nextPieceDisplay = smallCanvasEl.getContext("2d");
     }
+
+    start() {
+        this. board = [];
+        this.score = 0;
+        this.gameStatus = null;
+        this.currentTetromino;
+        this.nextTetromino;
+        this.render();
+    }
+
+    render() {
+        console.log("Render game");
+    }
 }
 
 
