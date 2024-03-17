@@ -1,3 +1,5 @@
+import Tetromino from './tetromino.js';
+
 /* ----- constants -----*/
 
 /* ----- app's state (variables) -----*/
@@ -21,19 +23,22 @@ class TetrisGame {
     this.msgEl = msg;
     this.boardDisplay = board.getContext('2d');
     this.nextPieceDisplay = nextPiece.getContext('2d');
+    this.boardEl.width = 10;
+    this.boardEl.height = 20;
   }
 
   start() {
     this.board = [];
     this.score = 0;
     this.gameStatus = null;
-    this.currentTetromino = null;
+    this.currentTetromino = new Tetromino(this.boardDisplay);
     this.nextTetromino = null;
     this.render();
   }
 
   render() {
     console.log('Render game');
+    this.currentTetromino.render();
   }
 }
 
