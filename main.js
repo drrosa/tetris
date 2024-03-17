@@ -1,49 +1,46 @@
-        /*----- constants -----*/
+/* ----- constants -----*/
 
-
-        /*----- app's state (variables) -----*/
+/* ----- app's state (variables) -----*/
 let game;
 
+/* ----- cached element references -----*/
+const boardEl = document.getElementById('board-canvas');
+const scoreEl = document.getElementById('score');
+const nextPiecelEl = document.getElementById('next-piece-canvas');
+const msgEl = document.getElementById('message');
 
-        /*----- cached element references -----*/
-let canvasEl = document.getElementById("board-canvas");
-let spanEl = document.getElementById("score");
-let smallCanvasEl = document.getElementById("next-piece-canvas");
-let h2El = document.getElementById("message");
+/* ----- event listeners -----*/
 
+/* ----- classes -----*/
 
-        /*----- event listeners -----*/
-
-
-        /*----- classes -----*/
 class TetrisGame {
-    constructor(canvasEl, spanEl, smallCanvasEl, h2El) {
-        this.boardEl = canvasEl;
-        this.scoreEl = spanEl;
-        this.nextPieceEl = smallCanvasEl;
-        this.msgEl = h2El;
-        this.boardDisplay = canvasEl.getContext("2d");
-        this.nextPieceDisplay = smallCanvasEl.getContext("2d");
-    }
+  constructor(board, score, nextPiece, msg) {
+    this.boardEl = board;
+    this.scoreEl = score;
+    this.nextPieceEl = nextPiece;
+    this.msgEl = msg;
+    this.boardDisplay = board.getContext('2d');
+    this.nextPieceDisplay = nextPiece.getContext('2d');
+  }
 
-    start() {
-        this. board = [];
-        this.score = 0;
-        this.gameStatus = null;
-        this.currentTetromino;
-        this.nextTetromino;
-        this.render();
-    }
+  start() {
+    this.board = [];
+    this.score = 0;
+    this.gameStatus = null;
+    this.currentTetromino = null;
+    this.nextTetromino = null;
+    this.render();
+  }
 
-    render() {
-        console.log("Render game");
-    }
+  render() {
+    console.log('Render game');
+  }
 }
 
-
-        /*----- functions -----*/
-init();
-
+/* ----- functions -----*/
 function init() {
-    game = new TetrisGame(canvasEl, spanEl, smallCanvasEl, h2El);
+  game = new TetrisGame(boardEl, scoreEl, nextPiecelEl, msgEl);
+  game.start();
 }
+
+init();
