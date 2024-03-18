@@ -1,6 +1,9 @@
 import Tetromino from './tetromino.js';
 
 /* ----- constants -----*/
+const BLOCK_SIZE = 15;
+const COLS = 10;
+const ROWS = 20;
 
 /* ----- app's state (variables) -----*/
 let game;
@@ -12,18 +15,12 @@ const nextPiecelEl = document.getElementById('next-piece-canvas');
 const msgEl = document.getElementById('message');
 
 /* ----- classes -----*/
-
 class TetrisGame {
-  constructor(board, score, nextPiece, msg) {
-    this.boardEl = board;
+  constructor(boardDisplay, score, nextPieceDisplay, msg) {
+    this.boardDisplay = boardDisplay;
     this.scoreEl = score;
-    this.nextPieceEl = nextPiece;
+    this.nextPieceDisplay = nextPieceDisplay;
     this.msgEl = msg;
-    this.boardDisplay = board.getContext('2d');
-    this.nextPieceDisplay = nextPiece.getContext('2d');
-    this.boardEl.width = 150;
-    this.boardEl.height = 300;
-    this.boardDisplay.scale(15, 15);
   }
 
   start() {
@@ -32,17 +29,24 @@ class TetrisGame {
     this.gameStatus = null;
     this.currentTetromino = new Tetromino();
     this.nextTetromino = null;
-    this.render();
+    this.#render();
   }
 
-  render() {
+  #render() {
     this.currentTetromino.render(this.boardDisplay);
   }
 }
 
 /* ----- functions -----*/
 function init() {
-  game = new TetrisGame(boardEl, scoreEl, nextPiecelEl, msgEl);
+  const boardDisplay = boardEl.getContext('2d');
+  const nextPieceDisplay = nextPiecelEl.getContext('2d');
+
+  boardEl.width = COLS * BLOCK_SIZE;
+  boardEl.height = ROWS * BLOCK_SIZE;
+  boardDisplay.scale(BLOCK_SIZE, BLOCK_SIZE);
+
+  game = new TetrisGame(boardDisplay, scoreEl, nextPieceDisplay, msgEl);
   game.start();
 }
 
