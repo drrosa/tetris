@@ -1,4 +1,6 @@
 export default class Tetromino {
+  /* ----- constants -----*/
+
   static #SHAPES = Object.freeze([
     [
       [0, 0, 0, 0],
@@ -7,38 +9,38 @@ export default class Tetromino {
       [0, 0, 0, 0],
     ],
     [
-      [1, 0, 0],
-      [1, 1, 1],
+      [2, 0, 0],
+      [2, 2, 2],
       [0, 0, 0],
     ],
     [
-      [0, 0, 1],
-      [1, 1, 1],
+      [0, 0, 3],
+      [3, 3, 3],
       [0, 0, 0],
     ],
     [
-      [1, 1, 0],
-      [0, 1, 1],
+      [4, 4, 0],
+      [0, 4, 4],
       [0, 0, 0],
     ],
     [
-      [0, 1, 1],
-      [1, 1, 0],
+      [0, 5, 5],
+      [5, 5, 0],
       [0, 0, 0],
     ],
     [
-      [0, 1, 0],
-      [1, 1, 1],
+      [0, 6, 0],
+      [6, 6, 6],
       [0, 0, 0],
     ],
     [
-      [0, 1, 1],
-      [0, 1, 1],
-      [0, 0, 0],
+      [0, 7, 7, 0],
+      [0, 7, 7, 0],
     ],
   ]);
 
   static #COLORS = Object.freeze([
+    '#15171b',
     'cyan',
     'blue',
     'orange',
@@ -48,29 +50,30 @@ export default class Tetromino {
     'yellow',
   ]);
 
+  /* ----- state variables -----*/
+
+  #shape;
+
   #x;
 
   #y;
 
-  #shape;
-
-  #color;
+  /* ----- methods -----*/
 
   constructor() {
     const idx = Math.floor(Math.random() * Tetromino.#SHAPES.length);
     this.#shape = Tetromino.#SHAPES[idx];
-    this.#color = Tetromino.#COLORS[idx];
-    // The ⎢ and □ tetrominoes spawn centrally;
-    // the rest spawn in the left-middle columns.
-    this.#x = idx === 0 || idx === 6 ? 3 : 1;
+    // The even width tetrominoes (⎢ and □) spawn in the center;
+    // the 3-cell wide tetrominoes spawn in the center of the left half.
+    this.#x = (this.#shape[0].length % 2 === 0) ? 3 : 1;
     this.#y = 0;
   }
 
   render(canvasCtx) {
     this.#shape.forEach((row, j) => {
-      row.forEach((block, i) => {
+      row.forEach((blockColor, i) => {
         // eslint-disable-next-line no-param-reassign
-        canvasCtx.fillStyle = block ? this.#color : '#15171b';
+        canvasCtx.fillStyle = Tetromino.#COLORS[blockColor];
         canvasCtx.fillRect(this.#x + i, this.#y + j, 1, 1);
       });
     });
