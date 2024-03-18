@@ -11,8 +11,6 @@ const scoreEl = document.getElementById('score');
 const nextPiecelEl = document.getElementById('next-piece-canvas');
 const msgEl = document.getElementById('message');
 
-/* ----- event listeners -----*/
-
 /* ----- classes -----*/
 
 class TetrisGame {
@@ -23,22 +21,22 @@ class TetrisGame {
     this.msgEl = msg;
     this.boardDisplay = board.getContext('2d');
     this.nextPieceDisplay = nextPiece.getContext('2d');
-    this.boardEl.width = 10;
-    this.boardEl.height = 20;
+    this.boardEl.width = 150;
+    this.boardEl.height = 300;
+    this.boardDisplay.scale(15, 15);
   }
 
   start() {
     this.board = [];
     this.score = 0;
     this.gameStatus = null;
-    this.currentTetromino = new Tetromino(this.boardDisplay);
+    this.currentTetromino = new Tetromino();
     this.nextTetromino = null;
     this.render();
   }
 
   render() {
-    console.log('Render game');
-    this.currentTetromino.render();
+    this.currentTetromino.render(this.boardDisplay);
   }
 }
 
@@ -48,4 +46,5 @@ function init() {
   game.start();
 }
 
-init();
+/* ----- event listeners -----*/
+document.getElementById('start-button').addEventListener('click', init);

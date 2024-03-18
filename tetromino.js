@@ -1,10 +1,5 @@
 export default class Tetromino {
-  constructor(board) {
-    this.board = board;
-    this.spawn();
-  }
-
-  static TETROMINOS = [
+  static #SHAPES = Object.freeze([
     [
       [0, 1, 0, 0],
       [0, 1, 0, 0],
@@ -40,10 +35,9 @@ export default class Tetromino {
       [1, 1],
       [1, 1],
     ],
-  ];
+  ]);
 
-  static COLORS = [
-    'white',
+  static #COLORS = Object.freeze([
     'cyan',
     'blue',
     'orange',
@@ -51,18 +45,31 @@ export default class Tetromino {
     'green',
     'purple',
     'yellow',
-  ];
+  ]);
 
-  spawn() {
-    const idx = Math.floor(Math.random() * Tetromino.TETROMINOS.length);
-    this.shape = Tetromino.TETROMINOS[idx];
-    this.x = 4;
-    this.y = 0;
-    this.render();
+  #x;
+
+  #y;
+
+  constructor() {
+    this.#spawn(Tetromino.#SHAPES, Tetromino.#COLORS);
   }
 
-  render() {
-    this.board.fillStyle = 'red';
-    this.board.fillRect(this.x, this.y, this.shape.length, this.shape.length);
+  #spawn(shapes, colors) {
+    const idx = Math.floor(Math.random() * shapes.length);
+    this.shape = shapes[idx];
+    this.color = colors[idx];
+    this.#x = 4;
+    this.#y = 0;
+  }
+
+  render(canvasCtx) {
+    this.shape.forEach((row, j) => {
+      row.forEach((block, i) => {
+        // eslint-disable-next-line no-param-reassign
+        canvasCtx.fillStyle = block ? this.color : '#15171b';
+        canvasCtx.fillRect(this.#x + i, this.#y + j, 1, 1);
+      });
+    });
   }
 }
