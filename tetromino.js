@@ -69,6 +69,10 @@ export default class Tetromino {
     this.#y = 0;
   }
 
+  moveDown() {
+    this.#y += 1;
+  }
+
   render(canvasCtx) {
     this.#shape.forEach((row, j) => {
       row.forEach((blockColor, i) => {
