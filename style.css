@@ -46,6 +46,12 @@ canvas {
     height: 80vmin;
 }
 
+#next-piece-canvas {
+    width: 10vmin;
+    height: 10vmin;
+    margin-top: 2vmin;
+}
+
 aside {
     display: flex;
     flex-direction: column;

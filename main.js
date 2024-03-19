@@ -21,6 +21,10 @@ function init() {
   boardEl.height = HEIGHT;
   boardDisplay.scale(BLOCK_SIZE, BLOCK_SIZE);
 
+  nextPiecelEl.width = HEIGHT;
+  nextPiecelEl.height = WIDTH;
+  nextPieceDisplay.scale(HEIGHT / 6, WIDTH / 6);
+
   game = new TetrisGame(boardDisplay, scoreEl, nextPieceDisplay, msgEl);
   game.start();
 }
