@@ -1,5 +1,12 @@
 import Tetromino from './tetromino.js';
 
+/* ----- constants -----*/
+const COLS = 10;
+const ROWS = 20;
+export const BLOCK_SIZE = 15;
+export const WIDTH = COLS * BLOCK_SIZE;
+export const HEIGHT = ROWS * BLOCK_SIZE;
+
 export default class TetrisGame {
   constructor(boardDisplay, score, nextPieceDisplay, msg) {
     this.boardDisplay = boardDisplay;
@@ -35,8 +42,6 @@ export default class TetrisGame {
   }
 
   #clearScreen() {
-    const WIDTH = this.boardDisplay.canvas.width;
-    const HEIGHT = this.boardDisplay.canvas.height;
     this.boardDisplay.clearRect(0, 0, WIDTH, HEIGHT);
   }
 }

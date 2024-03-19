@@ -1,10 +1,4 @@
-import TetrisGame from './tetris-game.js';
-
-/* ----- constants -----*/
-
-const BLOCK_SIZE = 15;
-const COLS = 10;
-const ROWS = 20;
+import TetrisGame, { WIDTH, HEIGHT, BLOCK_SIZE } from './tetris-game.js';
 
 /* ----- app's state (variables) -----*/
 
@@ -23,8 +17,8 @@ function init() {
   const boardDisplay = boardEl.getContext('2d');
   const nextPieceDisplay = nextPiecelEl.getContext('2d');
 
-  boardEl.width = COLS * BLOCK_SIZE;
-  boardEl.height = ROWS * BLOCK_SIZE;
+  boardEl.width = WIDTH;
+  boardEl.height = HEIGHT;
   boardDisplay.scale(BLOCK_SIZE, BLOCK_SIZE);
 
   game = new TetrisGame(boardDisplay, scoreEl, nextPieceDisplay, msgEl);
