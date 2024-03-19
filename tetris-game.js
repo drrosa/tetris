@@ -13,7 +13,7 @@ export default class TetrisGame {
     this.scoreEl = score;
     this.nextPieceDisplay = nextPieceDisplay;
     this.msgEl = msg;
-    document.addEventListener('keydown', () => this.handleInput());
+    document.addEventListener('keydown', (kybd) => this.handleInput(kybd.code));
   }
 
   start() {
@@ -22,6 +22,11 @@ export default class TetrisGame {
     this.gameStatus = null;
     this.currentTetromino = new Tetromino();
     this.nextTetromino = null;
+    this.moves = {
+      ArrowDown: () => { this.currentTetromino.moveDown(); },
+      ArrowRight: () => { this.currentTetromino.moveRight(); },
+      ArrowLeft: () => { this.currentTetromino.moveLeft(); },
+    };
     setInterval(() => this.#gameLoop(), 500);
   }
 
@@ -31,10 +36,12 @@ export default class TetrisGame {
     this.#render();
   }
 
-  handleInput() {
-    this.#clearScreen();
-    this.currentTetromino.moveDown();
-    this.#render();
+  handleInput(key) {
+    if (key in this.moves) {
+      this.#clearScreen();
+      this.moves[key]();
+      this.#render();
+    }
   }
 
   #render() {

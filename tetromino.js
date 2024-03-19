@@ -73,12 +73,20 @@ export default class Tetromino {
     this.#y += 1;
   }
 
+  moveRight() {
+    this.#x += 1;
+  }
+
+  moveLeft() {
+    this.#x -= 1;
+  }
+
   render(canvasCtx) {
-    this.#shape.forEach((row, j) => {
-      row.forEach((blockColor, i) => {
+    this.#shape.forEach((row, y) => {
+      row.forEach((blockColor, x) => {
         // eslint-disable-next-line no-param-reassign
         canvasCtx.fillStyle = Tetromino.#COLORS[blockColor];
-        canvasCtx.fillRect(this.#x + i, this.#y + j, 1, 1);
+        canvasCtx.fillRect(this.#x + x, this.#y + y, 1, 1);
       });
     });
   }
