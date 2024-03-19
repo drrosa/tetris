@@ -1,8 +1,8 @@
 import Tetromino from './tetromino.js';
 
 /* ----- constants -----*/
-const COLS = 10;
-const ROWS = 20;
+export const COLS = 10;
+export const ROWS = 20;
 export const BLOCK_SIZE = 15;
 export const WIDTH = COLS * BLOCK_SIZE;
 export const HEIGHT = ROWS * BLOCK_SIZE;
@@ -13,7 +13,8 @@ export default class TetrisGame {
     this.scoreEl = score;
     this.nextPieceDisplay = nextPieceDisplay;
     this.msgEl = msg;
-    document.addEventListener('keydown', (kybd) => this.handleInput(kybd.code));
+    this.imgData = this.boardDisplay.getImageData(0, 0, WIDTH, HEIGHT);
+    document.addEventListener('keydown', (kybd) => this.#update(kybd.code));
   }
 
   start() {
@@ -27,21 +28,15 @@ export default class TetrisGame {
       ArrowRight: () => { this.currentTetromino.moveRight(); },
       ArrowLeft: () => { this.currentTetromino.moveLeft(); },
     };
-    setInterval(() => this.#gameLoop(), 500);
+    setInterval(() => this.#update(), 500);
   }
 
-  #gameLoop() {
+  #update(key) {
     this.#clearScreen();
-    this.currentTetromino.moveDown();
-    this.#render();
-  }
-
-  handleInput(key) {
     if (key in this.moves) {
-      this.#clearScreen();
       this.moves[key]();
-      this.#render();
-    }
+    } else this.currentTetromino.moveDown();
+    this.#render();
   }
 
   #render() {
@@ -49,6 +44,6 @@ export default class TetrisGame {
   }
 
   #clearScreen() {
-    this.boardDisplay.clearRect(0, 0, WIDTH, HEIGHT);
+    this.boardDisplay.putImageData(this.imgData, 0, 0);
   }
 }

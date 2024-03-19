@@ -14,7 +14,7 @@ const msgEl = document.getElementById('message');
 /* ----- functions -----*/
 
 function init() {
-  const boardDisplay = boardEl.getContext('2d');
+  const boardDisplay = boardEl.getContext('2d', { willReadFrequently: true });
   const nextPieceDisplay = nextPiecelEl.getContext('2d');
 
   boardEl.width = WIDTH;
