@@ -27,6 +27,7 @@ export default class TetrisGame {
       ArrowDown: () => { this.currentTetromino.moveDown(); },
       ArrowRight: () => { this.currentTetromino.moveRight(); },
       ArrowLeft: () => { this.currentTetromino.moveLeft(); },
+      ArrowUp: () => { this.currentTetromino.rotate(); },
     };
     setInterval(() => this.#update(), 500);
   }

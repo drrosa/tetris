@@ -34,8 +34,10 @@ export default class Tetromino {
       [0, 0, 0],
     ],
     [
+      [0, 0, 0, 0],
       [0, 7, 7, 0],
       [0, 7, 7, 0],
+      [0, 0, 0, 0],
     ],
   ]);
 
@@ -66,7 +68,7 @@ export default class Tetromino {
     // The even width tetrominoes (⎢ and □) spawn in the center;
     // the 3-cell wide tetrominoes spawn in the center of the left half.
     this.#x = (this.#shape[0].length % 2 === 0) ? 3 : 1;
-    this.#y = 0;
+    this.#y = -1;
   }
 
   moveDown() {
@@ -79,6 +81,20 @@ export default class Tetromino {
 
   moveLeft() {
     this.#x -= 1;
+  }
+
+  rotate() {
+    // Transpose and reverse rows
+    // to get a 90º rotation.
+    const shape = [];
+    this.#shape.forEach((row, i) => {
+      shape.push([]);
+      row.forEach((_, j) => {
+        shape[i][j] = this.#shape[j][i];
+      });
+      shape[i].reverse();
+    });
+    this.#shape = shape;
   }
 
   render(canvasCtx) {
