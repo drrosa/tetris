@@ -1,3 +1,5 @@
+import { ROWS, COLS } from './tetris-game.js';
+
 export default class Tetromino {
   /* ----- constants -----*/
 
@@ -72,15 +74,15 @@ export default class Tetromino {
   }
 
   moveDown() {
-    this.#y += 1;
+    if (this.checkCollision(0, 1)) this.#y += 1;
   }
 
   moveRight() {
-    this.#x += 1;
+    if (this.checkCollision(1, 0)) this.#x += 1;
   }
 
   moveLeft() {
-    this.#x -= 1;
+    if (this.checkCollision(-1, 0)) this.#x -= 1;
   }
 
   rotate() {
@@ -97,12 +99,46 @@ export default class Tetromino {
     this.#shape = shape;
   }
 
+  checkCollision(x, y) {
+    const top = this.#getTopLeftBlock();
+    top.x += this.#x + x;
+    top.y += this.#y + y;
+    const bot = this.#getBottomRightBlock();
+    bot.x += this.#x + x;
+    bot.y += this.#y + y;
+    return (top.x >= 0 && top.y >= -1 && bot.x < COLS && bot.y < ROWS);
+  }
+
+  #getTopLeftBlock() {
+    let topLeft = { x: this.#shape[0].length, y: 0 };
+    for (let y = 0; y < this.#shape.length; y += 1) {
+      const x = this.#shape[y].findIndex((block) => block !== 0);
+      if (x !== -1 && x < topLeft.x) {
+        topLeft = { x, y };
+      }
+    }
+    return topLeft;
+  }
+
+  #getBottomRightBlock() {
+    let bottomRight = { x: 0, y: 0 };
+    for (let y = 0; y < this.#shape.length; y += 1) {
+      const x = this.#shape[y].findLastIndex((block) => block !== 0);
+      if (x > bottomRight.x) {
+        bottomRight = { x, y };
+      }
+    }
+    return bottomRight;
+  }
+
   render(canvasCtx) {
     this.#shape.forEach((row, y) => {
       row.forEach((blockColor, x) => {
-        // eslint-disable-next-line no-param-reassign
-        canvasCtx.fillStyle = Tetromino.#COLORS[blockColor];
-        canvasCtx.fillRect(this.#x + x, this.#y + y, 1, 1);
+        if (this.#shape[y][x]) {
+          // eslint-disable-next-line no-param-reassign
+          canvasCtx.fillStyle = Tetromino.#COLORS[blockColor];
+          canvasCtx.fillRect(this.#x + x, this.#y + y, 1, 1);
+        }
       });
     });
   }
