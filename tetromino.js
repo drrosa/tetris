@@ -98,12 +98,12 @@ export default class Tetromino {
       });
       shape[i].reverse();
     });
-    this.#shape = shape;
+    if (this.validMove(this.#x, this.#y, shape)) this.#shape = shape;
   }
 
-  validMove(x, y) {
-    const left = this.#getLeftMostBlock();
-    const right = this.#getRightMostBlock();
+  validMove(x, y, rotated = null) {
+    const left = this.#getLeftMostBlock(rotated);
+    const right = this.#getRightMostBlock(rotated);
     return (
       left.x + x >= 0
       && left.y + y < ROWS
@@ -112,25 +112,27 @@ export default class Tetromino {
     );
   }
 
-  #getLeftMostBlock() {
-    let left = { x: this.#shape[0].length, y: 0 };
-    for (let y = 0; y < this.#shape.length; y += 1) {
-      const x = this.#shape[y].findIndex((block) => block !== 0);
+  #getLeftMostBlock(rotated = null) {
+    const shape = rotated || this.#shape;
+    let left = { x: shape[0].length, y: 0 };
+    shape.forEach((_, y) => {
+      const x = shape[y].findIndex((block) => block !== 0);
       if (x !== -1 && x <= left.x) {
         left = { x, y };
       }
-    }
+    });
     return left;
   }
 
-  #getRightMostBlock() {
+  #getRightMostBlock(rotated = null) {
+    const shape = rotated || this.#shape;
     let right = { x: 0, y: 0 };
-    for (let y = 0; y < this.#shape.length; y += 1) {
-      const x = this.#shape[y].findLastIndex((block) => block !== 0);
+    shape.forEach((_, y) => {
+      const x = shape[y].findLastIndex((block) => block !== 0);
       if (x !== -1 && x >= right.x) {
         right = { x, y };
       }
-    }
+    });
     return right;
   }
 
