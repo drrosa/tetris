@@ -100,35 +100,35 @@ export default class Tetromino {
   }
 
   checkCollision(x, y) {
-    const top = this.#getTopLeftBlock();
-    top.x += this.#x + x;
-    top.y += this.#y + y;
-    const bot = this.#getBottomRightBlock();
-    bot.x += this.#x + x;
-    bot.y += this.#y + y;
-    return (top.x >= 0 && top.y >= -1 && bot.x < COLS && bot.y < ROWS);
+    const left = this.#getLeftMostBlock();
+    left.x += this.#x + x;
+    left.y += this.#y + y;
+    const right = this.#getRightMostBlock();
+    right.x += this.#x + x;
+    right.y += this.#y + y;
+    return (left.x >= 0 && left.y < ROWS && right.x < COLS && right.y < ROWS);
   }
 
-  #getTopLeftBlock() {
-    let topLeft = { x: this.#shape[0].length, y: 0 };
+  #getLeftMostBlock() {
+    let left = { x: this.#shape[0].length, y: 0 };
     for (let y = 0; y < this.#shape.length; y += 1) {
       const x = this.#shape[y].findIndex((block) => block !== 0);
-      if (x !== -1 && x < topLeft.x) {
-        topLeft = { x, y };
+      if (x !== -1 && x <= left.x) {
+        left = { x, y };
       }
     }
-    return topLeft;
+    return left;
   }
 
-  #getBottomRightBlock() {
-    let bottomRight = { x: 0, y: 0 };
+  #getRightMostBlock() {
+    let right = { x: 0, y: 0 };
     for (let y = 0; y < this.#shape.length; y += 1) {
       const x = this.#shape[y].findLastIndex((block) => block !== 0);
-      if (x > bottomRight.x) {
-        bottomRight = { x, y };
+      if (x !== -1 && x >= right.x) {
+        right = { x, y };
       }
     }
-    return bottomRight;
+    return right;
   }
 
   render(canvasCtx) {
