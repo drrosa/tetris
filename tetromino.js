@@ -74,15 +74,15 @@ export default class Tetromino {
   }
 
   moveDown() {
-    if (this.checkCollision(0, 1)) this.#y += 1;
+    if (this.validMove(this.#x, this.#y + 1)) this.#y += 1;
   }
 
   moveRight() {
-    if (this.checkCollision(1, 0)) this.#x += 1;
+    if (this.validMove(this.#x + 1, this.#y)) this.#x += 1;
   }
 
   moveLeft() {
-    if (this.checkCollision(-1, 0)) this.#x -= 1;
+    if (this.validMove(this.#x - 1, this.#y)) this.#x -= 1;
   }
 
   rotate() {
@@ -99,14 +99,15 @@ export default class Tetromino {
     this.#shape = shape;
   }
 
-  checkCollision(x, y) {
+  validMove(x, y) {
     const left = this.#getLeftMostBlock();
-    left.x += this.#x + x;
-    left.y += this.#y + y;
     const right = this.#getRightMostBlock();
-    right.x += this.#x + x;
-    right.y += this.#y + y;
-    return (left.x >= 0 && left.y < ROWS && right.x < COLS && right.y < ROWS);
+    return (
+      left.x + x >= 0
+      && left.y + y < ROWS
+      && right.x + x < COLS
+      && right.y + y < ROWS
+    );
   }
 
   #getLeftMostBlock() {
