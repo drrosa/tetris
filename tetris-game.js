@@ -38,12 +38,14 @@ export default class TetrisGame {
 
   #update(key) {
     this.#render();
-    if (key in this.moves) {
-      this.moves[key]();
-    } else if (!this.currentTetromino.moveDown()) {
+
+    if (key in this.moves) { this.moves[key](); return; }
+
+    const moveDown = this.currentTetromino.moveDown();
+    if (!moveDown) {
       this.boardImgData = this.boardDisplay.getImageData(0, 0, WIDTH, HEIGHT);
       this.currentTetromino = new Tetromino();
-    }
+    } else if (moveDown === -1) this.msgEl.innerText = 'Game Over!';
   }
 
   #render() {

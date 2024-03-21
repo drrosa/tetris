@@ -78,7 +78,7 @@ export default class Tetromino {
     const validMove = this.validMove(this.#x, this.#y + 1);
     if (validMove) this.#y += 1;
     else this.#saveLocation();
-    return validMove;
+    return (this.#y === -1) ? -1 : validMove;
   }
 
   moveRight() {
