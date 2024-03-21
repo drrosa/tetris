@@ -38,7 +38,6 @@ export default class TetrisGame {
   }
 
   #update(key) {
-    this.#clearScreen();
     this.#render();
     if (key in this.moves) {
       this.moves[key]();
@@ -49,10 +48,7 @@ export default class TetrisGame {
   }
 
   #render() {
-    this.currentTetromino.render(this.boardDisplay);
-  }
-
-  #clearScreen() {
     this.boardDisplay.putImageData(this.imgData, 0, 0);
+    this.currentTetromino.render(this.boardDisplay);
   }
 }
