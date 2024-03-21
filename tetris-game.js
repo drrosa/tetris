@@ -39,10 +39,13 @@ export default class TetrisGame {
 
   #update(key) {
     this.#clearScreen();
+    this.#render();
     if (key in this.moves) {
       this.moves[key]();
-    } else this.currentTetromino.moveDown();
-    this.#render();
+    } else if (!this.currentTetromino.moveDown()) {
+      this.imgData = this.boardDisplay.getImageData(0, 0, WIDTH, HEIGHT);
+      this.currentTetromino = new Tetromino();
+    }
   }
 
   #render() {

@@ -74,7 +74,9 @@ export default class Tetromino {
   }
 
   moveDown() {
-    if (this.validMove(this.#x, this.#y + 1)) this.#y += 1;
+    const validMove = this.validMove(this.#x, this.#y + 1);
+    if (validMove) this.#y += 1;
+    return validMove;
   }
 
   moveRight() {
