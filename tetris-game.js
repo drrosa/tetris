@@ -14,7 +14,12 @@ export default class TetrisGame {
     this.nextPieceDisplay = nextPieceDisplay;
     this.msgEl = msg;
     this.imgData = this.boardDisplay.getImageData(0, 0, WIDTH, HEIGHT);
-    document.addEventListener('keydown', (kybd) => this.#update(kybd.code));
+    document.addEventListener('keydown', (kybd) => {
+      if (kybd.code in this.moves) {
+        kybd.preventDefault();
+        this.#update(kybd.code);
+      }
+    });
   }
 
   start() {
