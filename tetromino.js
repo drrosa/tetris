@@ -55,6 +55,7 @@ export default class Tetromino {
   ]);
 
   /* ----- state variables -----*/
+  static #board = Array(20).fill(null).map(() => new Array(10).fill(null));
 
   #shape;
 
@@ -76,6 +77,7 @@ export default class Tetromino {
   moveDown() {
     const validMove = this.validMove(this.#x, this.#y + 1);
     if (validMove) this.#y += 1;
+    else this.#saveLocation();
     return validMove;
   }
 
@@ -109,6 +111,8 @@ export default class Tetromino {
       && left.y + y < ROWS
       && right.x + x < COLS
       && right.y + y < ROWS
+      && !Tetromino.#board[left.x + x][left.y + y]
+      && !Tetromino.#board[right.x + x][right.y + y]
     );
   }
 
@@ -134,6 +138,16 @@ export default class Tetromino {
       }
     });
     return right;
+  }
+
+  #saveLocation() {
+    this.#shape.forEach((row, y) => {
+      row.forEach((blockColor, x) => {
+        if (this.#shape[y][x]) {
+          Tetromino.#board[this.#x + x][this.#y + y] = 1;
+        }
+      });
+    });
   }
 
   render(canvasCtx) {

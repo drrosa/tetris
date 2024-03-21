@@ -13,7 +13,7 @@ export default class TetrisGame {
     this.scoreEl = score;
     this.nextPieceDisplay = nextPieceDisplay;
     this.msgEl = msg;
-    this.imgData = this.boardDisplay.getImageData(0, 0, WIDTH, HEIGHT);
+    this.boardImgData = this.boardDisplay.getImageData(0, 0, WIDTH, HEIGHT);
     document.addEventListener('keydown', (kybd) => {
       if (kybd.code in this.moves) {
         kybd.preventDefault();
@@ -23,7 +23,6 @@ export default class TetrisGame {
   }
 
   start() {
-    this.board = [];
     this.score = 0;
     this.gameStatus = null;
     this.currentTetromino = new Tetromino();
@@ -42,13 +41,13 @@ export default class TetrisGame {
     if (key in this.moves) {
       this.moves[key]();
     } else if (!this.currentTetromino.moveDown()) {
-      this.imgData = this.boardDisplay.getImageData(0, 0, WIDTH, HEIGHT);
+      this.boardImgData = this.boardDisplay.getImageData(0, 0, WIDTH, HEIGHT);
       this.currentTetromino = new Tetromino();
     }
   }
 
   #render() {
-    this.boardDisplay.putImageData(this.imgData, 0, 0);
+    this.boardDisplay.putImageData(this.boardImgData, 0, 0);
     this.currentTetromino.render(this.boardDisplay);
   }
 }
