@@ -44,14 +44,14 @@ export default class Tetromino {
   ]);
 
   static #COLORS = Object.freeze([
-    '#15171b',
-    'cyan',
-    'blue',
-    'orange',
-    'red',
-    'green',
-    'purple',
-    'yellow',
+    '#3A4A7D', // Canvas background color.
+    '#59C3C3', // Soft pastel cyan
+    '#5172B4', // Muted denim blue.
+    '#F2A65A', // Warm muted orange.
+    '#D85A7F', // Soft rose red.
+    '#8EBE7E', // Muted sage-like green.
+    '#AB83A1', // Dusty purple.
+    '#F9E884', // Desaturated soft vintage yellow.
   ]);
 
   /* ----- state variables -----*/
