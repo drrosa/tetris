@@ -55,7 +55,7 @@ export default class Tetromino {
   ]);
 
   /* ----- state variables -----*/
-  static #board = Array(20).fill(null).map(() => new Array(10).fill(null));
+  static #board = new Array(20).fill(null).map(() => new Array(10).fill(null));
 
   #shape;
 
@@ -77,7 +77,7 @@ export default class Tetromino {
   moveDown() {
     const validMove = this.validMove(this.#x, this.#y + 1);
     if (validMove) this.#y += 1;
-    else this.#saveLocation();
+    else if (this.#y >= 0) this.#saveLocation();
     return (this.#y === -1) ? -1 : validMove;
   }
 
@@ -111,16 +111,16 @@ export default class Tetromino {
       && left.y + y < ROWS
       && right.x + x < COLS
       && right.y + y < ROWS
-      && !Tetromino.#board[left.x + x][left.y + y]
-      && !Tetromino.#board[right.x + x][right.y + y]
+      && !Tetromino.#board[left.y + y][left.x + x]
+      && !Tetromino.#board[right.y + y][right.x + x]
     );
   }
 
   #getLeftMostBlock(rotated = null) {
     const shape = rotated || this.#shape;
     let left = { x: shape[0].length, y: 0 };
-    shape.forEach((_, y) => {
-      const x = shape[y].findIndex((block) => block !== 0);
+    shape.forEach((row, y) => {
+      const x = row.findIndex((block) => block !== 0);
       if (x !== -1 && x <= left.x) {
         left = { x, y };
       }
@@ -131,8 +131,8 @@ export default class Tetromino {
   #getRightMostBlock(rotated = null) {
     const shape = rotated || this.#shape;
     let right = { x: 0, y: 0 };
-    shape.forEach((_, y) => {
-      const x = shape[y].findLastIndex((block) => block !== 0);
+    shape.forEach((row, y) => {
+      const x = row.findLastIndex((block) => block !== 0);
       if (x !== -1 && x >= right.x) {
         right = { x, y };
       }
@@ -143,8 +143,32 @@ export default class Tetromino {
   #saveLocation() {
     this.#shape.forEach((row, y) => {
       row.forEach((blockColor, x) => {
-        if (this.#shape[y][x]) {
-          Tetromino.#board[this.#x + x][this.#y + y] = 1;
+        if (blockColor) {
+          Tetromino.#board[this.#y + y][this.#x + x] = blockColor;
+        }
+      });
+    });
+  }
+
+  static checkClearLines() {
+    let lineCount = 0;
+    Tetromino.#board.forEach((row, y) => {
+      if (!row.includes(null)) {
+        Tetromino.#board.splice(y, 1);
+        Tetromino.#board.unshift(new Array(COLS).fill(null));
+        lineCount += 1;
+      }
+    });
+    return lineCount;
+  }
+
+  static renderBoard(boardDisplay) {
+    Tetromino.#board.forEach((row, y) => {
+      row.forEach((blockColor, x) => {
+        if (blockColor) {
+          // eslint-disable-next-line no-param-reassign
+          boardDisplay.fillStyle = Tetromino.#COLORS[blockColor];
+          boardDisplay.fillRect(x, y, 1, 1);
         }
       });
     });
@@ -153,7 +177,7 @@ export default class Tetromino {
   render(canvasCtx) {
     this.#shape.forEach((row, y) => {
       row.forEach((blockColor, x) => {
-        if (this.#shape[y][x]) {
+        if (blockColor) {
           // eslint-disable-next-line no-param-reassign
           canvasCtx.fillStyle = Tetromino.#COLORS[blockColor];
           canvasCtx.fillRect(this.#x + x, this.#y + y, 1, 1);

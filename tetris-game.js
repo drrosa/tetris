@@ -43,6 +43,12 @@ export default class TetrisGame {
 
     const moveDown = this.currentTetromino.moveDown();
     if (!moveDown) {
+      const lines = Tetromino.checkClearLines();
+      if (lines) {
+        this.boardDisplay.clearRect(0, 0, COLS, ROWS);
+        Tetromino.renderBoard(this.boardDisplay);
+        this.score += lines;
+      }
       this.boardImgData = this.boardDisplay.getImageData(0, 0, WIDTH, HEIGHT);
       this.currentTetromino = new Tetromino();
     } else if (moveDown === -1) this.msgEl.innerText = 'Game Over!';
@@ -51,5 +57,6 @@ export default class TetrisGame {
   #render() {
     this.boardDisplay.putImageData(this.boardImgData, 0, 0);
     this.currentTetromino.render(this.boardDisplay);
+    this.scoreEl.innerText = this.score;
   }
 }
