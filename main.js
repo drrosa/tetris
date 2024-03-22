@@ -14,21 +14,26 @@ const msgEl = document.getElementById('message');
 /* ----- functions -----*/
 
 function init() {
-  if (!game) {
-    const boardDisplay = boardEl.getContext('2d', { willReadFrequently: true });
-    const nextPieceDisplay = nextPiecelEl.getContext('2d');
-
-    boardEl.width = WIDTH;
-    boardEl.height = HEIGHT;
-    boardDisplay.scale(BLOCK_SIZE, BLOCK_SIZE);
-
-    nextPiecelEl.width = HEIGHT;
-    nextPiecelEl.height = WIDTH;
-    nextPieceDisplay.scale(HEIGHT / 6, WIDTH / 6);
-
-    game = new TetrisGame(boardDisplay, scoreEl, nextPieceDisplay, msgEl);
-    game.start();
+  if (game) {
+    clearInterval(game.intervalID);
+    boardEl.getContext('2d').clearRect(0, 0, boardEl.width, boardEl.height);
+    nextPiecelEl.getContext('2d').clearRect(0, 0, nextPiecelEl.width, nextPiecelEl.height);
+    game = null;
   }
+
+  const boardDisplay = boardEl.getContext('2d', { willReadFrequently: true });
+  const nextPieceDisplay = nextPiecelEl.getContext('2d');
+
+  boardEl.width = WIDTH;
+  boardEl.height = HEIGHT;
+  boardDisplay.scale(BLOCK_SIZE, BLOCK_SIZE);
+
+  nextPiecelEl.width = HEIGHT;
+  nextPiecelEl.height = WIDTH;
+  nextPieceDisplay.scale(HEIGHT / 6, WIDTH / 6);
+
+  game = new TetrisGame(boardDisplay, scoreEl, nextPieceDisplay, msgEl);
+  game.start();
 }
 
 /* ----- event listeners -----*/
