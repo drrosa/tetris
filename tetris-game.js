@@ -6,6 +6,11 @@ export const ROWS = 20;
 export const BLOCK_SIZE = 15;
 export const WIDTH = COLS * BLOCK_SIZE;
 export const HEIGHT = ROWS * BLOCK_SIZE;
+const MSGS = {
+  null: '',
+  0: 'GAME OVER!',
+  1: 'YOU WON!',
+};
 
 export default class TetrisGame {
   constructor(boardDisplay, score, nextPieceDisplay, msg) {
@@ -14,12 +19,13 @@ export default class TetrisGame {
     this.nextPieceDisplay = nextPieceDisplay;
     this.msgEl = msg;
     this.boardImgData = this.boardDisplay.getImageData(0, 0, WIDTH, HEIGHT);
-    document.addEventListener('keydown', (kybd) => {
+    this.keydownHandler = (kybd) => {
       if (kybd.code in this.moves) {
         kybd.preventDefault();
         this.#update(kybd.code);
       }
-    });
+    };
+    document.addEventListener('keydown', this.keydownHandler);
   }
 
   start() {
@@ -33,7 +39,7 @@ export default class TetrisGame {
       ArrowLeft: () => { this.currentTetromino.moveLeft(); },
       ArrowUp: () => { this.currentTetromino.rotate(); },
     };
-    setInterval(() => this.#update(), 500);
+    this.intervalID = setInterval(() => this.#update(), 500);
   }
 
   #update(key) {
@@ -51,12 +57,24 @@ export default class TetrisGame {
       }
       this.boardImgData = this.boardDisplay.getImageData(0, 0, WIDTH, HEIGHT);
       this.currentTetromino = new Tetromino();
-    } else if (moveDown === -1) this.msgEl.innerText = 'Game Over!';
+    } else if (moveDown === -1) this.gameStatus = 0;
+
+    if (this.gameStatus != null) this.#stop();
+  }
+
+  #stop() {
+    this.#render();
+    clearInterval(this.intervalID);
+    document.removeEventListener('keydown', this.keydownHandler);
+    this.currentTetromino = null;
+    this.gameStatus = null;
+    this.score = 0;
   }
 
   #render() {
     this.boardDisplay.putImageData(this.boardImgData, 0, 0);
     this.currentTetromino.render(this.boardDisplay);
     this.scoreEl.innerText = this.score;
+    this.msgEl.innerText = MSGS[this.gameStatus];
   }
 }
