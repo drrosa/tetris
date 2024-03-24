@@ -104,6 +104,7 @@ export default class Tetromino {
   }
 
   validMove(x, y, rotated = null) {
+    if (y < 0) return false;
     const left = this.#getLeftMostBlock(rotated);
     const right = this.#getRightMostBlock(rotated);
     return (
@@ -183,6 +184,10 @@ export default class Tetromino {
         }
       });
     });
+  }
+
+  static resetBoard() {
+    Tetromino.#board = new Array(20).fill(null).map(() => new Array(10).fill(null));
   }
 
   render(canvasCtx) {

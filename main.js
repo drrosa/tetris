@@ -14,10 +14,8 @@ const msgEl = document.getElementById('message');
 /* ----- functions -----*/
 
 function init() {
-  if (game) {
-    clearInterval(game.intervalID);
-    boardEl.getContext('2d').clearRect(0, 0, boardEl.width, boardEl.height);
-    nextPiecelEl.getContext('2d').clearRect(0, 0, nextPiecelEl.width, nextPiecelEl.height);
+  if (game && game.gameStatus == null) {
+    game.stop();
     game = null;
   }
 

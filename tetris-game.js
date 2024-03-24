@@ -33,6 +33,7 @@ export default class TetrisGame {
     this.gameStatus = null;
     this.currentTetromino = new Tetromino();
     this.nextTetromino = null;
+    this.#render();
     this.moves = {
       ArrowDown: () => { this.currentTetromino.moveDown(); },
       ArrowRight: () => { this.currentTetromino.moveRight(); },
@@ -59,16 +60,14 @@ export default class TetrisGame {
       this.currentTetromino = new Tetromino();
     } else if (moveDown === -1) this.gameStatus = 0;
 
-    if (this.gameStatus != null) this.#stop();
+    if (this.gameStatus != null) this.stop();
   }
 
-  #stop() {
+  stop() {
     this.#render();
     clearInterval(this.intervalID);
     document.removeEventListener('keydown', this.keydownHandler);
-    this.currentTetromino = null;
-    this.gameStatus = null;
-    this.score = 0;
+    Tetromino.resetBoard();
   }
 
   #render() {
