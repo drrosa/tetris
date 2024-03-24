@@ -111,9 +111,20 @@ export default class Tetromino {
       && left.y + y < ROWS
       && right.x + x < COLS
       && right.y + y < ROWS
-      && !Tetromino.#board[left.y + y][left.x + x]
-      && !Tetromino.#board[right.y + y][right.x + x]
+      && !this.#isCollision(x, y, rotated)
     );
+  }
+
+  #isCollision(x, y, rotated = null) {
+    const shape = rotated || this.#shape;
+    for (let i = 0; i < shape.length; i += 1) {
+      for (let j = 0; j < shape[0].length; j += 1) {
+        if (shape[i][j] && Tetromino.#board[y + i][x + j]) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   #getLeftMostBlock(rotated = null) {
