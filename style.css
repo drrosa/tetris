@@ -8,13 +8,13 @@
 }
 
 * {
+    font-family: 'IBM Plex Mono', sans-serif;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
 body {
-    font-family: 'Arial', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,7 +28,7 @@ body {
 header {
     font-size: 5vmin;
     margin-top: 2vmin;
-    margin-bottom: 2vmin;
+    margin-bottom: 4vmin;
 }
 
 main {
@@ -49,9 +49,11 @@ canvas {
 }
 
 #next-piece-canvas {
-    width: 10vmin;
-    height: 10vmin;
+    width: 20vmin;
+    height: 20vmin;
     margin-top: 2vmin;
+    border: none;
+    background-color: var(--background-color);
 }
 
 aside {
@@ -66,7 +68,7 @@ aside {
 }
 
 button {
-    margin-top: 2vmin;
+    margin-top: 30vmin;
     margin-bottom: 2vmin;
     padding: 2vmin 4vmin;
     font-size: 3vmin;
