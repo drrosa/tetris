@@ -190,13 +190,15 @@ export default class Tetromino {
     Tetromino.#board = new Array(20).fill(null).map(() => new Array(10).fill(null));
   }
 
-  render(canvasCtx) {
+  render(canvasCtx, isNext) {
+    const posX = isNext ? 1 : this.#x;
+    const posY = isNext ? 1 : this.#y;
     this.#shape.forEach((row, y) => {
       row.forEach((blockColor, x) => {
         if (blockColor) {
           // eslint-disable-next-line no-param-reassign
           canvasCtx.fillStyle = Tetromino.#COLORS[blockColor];
-          canvasCtx.fillRect(this.#x + x, this.#y + y, 1, 1);
+          canvasCtx.fillRect(posX + x, posY + y, 1, 1);
         }
       });
     });

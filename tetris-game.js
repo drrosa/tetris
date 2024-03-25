@@ -32,7 +32,7 @@ export default class TetrisGame {
     this.score = 0;
     this.gameStatus = null;
     this.currentTetromino = new Tetromino();
-    this.nextTetromino = null;
+    this.nextTetromino = new Tetromino();
     this.#render();
     this.moves = {
       ArrowDown: () => { this.currentTetromino.moveDown(); },
@@ -57,7 +57,8 @@ export default class TetrisGame {
         this.score += lines;
       }
       this.boardImgData = this.boardDisplay.getImageData(0, 0, WIDTH, HEIGHT);
-      this.currentTetromino = new Tetromino();
+      this.currentTetromino = this.nextTetromino;
+      this.nextTetromino = new Tetromino();
     } else if (moveDown === -1) this.gameStatus = 0;
 
     if (this.gameStatus != null) this.stop();
@@ -73,6 +74,8 @@ export default class TetrisGame {
   #render() {
     this.boardDisplay.putImageData(this.boardImgData, 0, 0);
     this.currentTetromino.render(this.boardDisplay);
+    this.nextPieceDisplay.clearRect(0, 0, HEIGHT, WIDTH);
+    this.nextTetromino.render(this.nextPieceDisplay, true);
     this.scoreEl.innerText = this.score;
     this.msgEl.innerText = MSGS[this.gameStatus];
   }
