@@ -103,6 +103,10 @@ export default class Tetromino {
     if (this.validMove(this.#x, this.#y, shape)) this.#shape = shape;
   }
 
+  hardDrop() {
+    while (this.moveDown());
+  }
+
   validMove(x, y, rotated = null) {
     if (y < 0) return false;
     const left = this.#getLeftMostBlock(rotated);

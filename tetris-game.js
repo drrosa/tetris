@@ -40,6 +40,7 @@ export default class TetrisGame {
       ArrowRight: () => { this.currentTetromino.moveRight(); },
       ArrowLeft: () => { this.currentTetromino.moveLeft(); },
       ArrowUp: () => { this.currentTetromino.rotate(); },
+      Space: () => { this.currentTetromino.hardDrop(); },
     };
     this.intervalID = setInterval(() => this.#update(), 500);
   }
