@@ -22,7 +22,8 @@ export default class TetrisGame {
     this.keydownHandler = (kybd) => {
       if (kybd.code in this.moves) {
         kybd.preventDefault();
-        this.#update(kybd.code);
+        this.moves[kybd.code]();
+        this.#render();
       }
     };
     document.addEventListener('keydown', this.keydownHandler);
@@ -43,11 +44,8 @@ export default class TetrisGame {
     this.intervalID = setInterval(() => this.#update(), 500);
   }
 
-  #update(key) {
+  #update() {
     this.#render();
-
-    if (key in this.moves) { this.moves[key](); return; }
-
     const moveDown = this.currentTetromino.moveDown();
     if (!moveDown) {
       const lines = Tetromino.checkClearLines();
